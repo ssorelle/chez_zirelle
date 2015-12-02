@@ -1,0 +1,14 @@
+body {
+
+}
+
+input {
+  width: 200px;
+}
+
+#map {
+        width: 800px;
+        height: 640px;
+        background-color: #CCC;
+}
+
