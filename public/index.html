@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+  <head>
+    <title>Chez ZiRelle Locations</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="app.js"></script>
+  </head>
+
+  <body>
+    <div ng-controller="AppController">
+      <h1>Chez ZiRelle Locations</h1>
+      <input type="text" placeholder="Location Name" ng-model="locationName">
+      <input type="text" placeholder="Location Address" ng-model="newLocation">
+      <button ng-click="addLocation()">Add a Location</button>
+      <br><br>
+    </div>
+
+    <div id="map"></div>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwELC52O_-ab6Gq08IIc9XlhP08_vwCIM&callback=initMap">
+    </script>
+  </body>
+</html>
