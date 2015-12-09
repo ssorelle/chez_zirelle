@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
-mongoose.connect('mongodb://localhost/chez-zirelle');
+mongoose.connect('mongodb://localhost/db/chez-zirelle');
 
 var addressSchema = mongoose.Schema({
   label: String,
