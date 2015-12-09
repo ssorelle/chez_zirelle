@@ -2,19 +2,16 @@ var app = angular.module('myApp', []);
 
 app.factory('AddressesFactory', function ($http){
   var GetAddresses = function(){
-      return $http({
+    return $http({
       method: 'GET',
       url: '/addresses'
     })
-    .then(function (res) {
-      addresses = res.data;
-      for(var i = 0; i < addresses.length; i++){
-        geocode(i);
-      }
+    .then(function(res){
+      return res.data;
     });
   };
 
-  var AddAddresses = function(addedAddress){
+  var AddAddress = function(addedAddress){
     return $http({
       method: 'POST',
       url: '/addresses',
@@ -24,23 +21,31 @@ app.factory('AddressesFactory', function ($http){
 
   return {
     GetAddresses: GetAddresses,
-    AddAddresses: AddAddresses
+    AddAddress: AddAddress
   }
 });
 
 app.controller('AppController', function ($scope, AddressesFactory) {
   $scope.addLocation = function(Addresses){
-    addresses.push({label: $scope.locationName, address: $scope.newLocation});
-    geocode(addresses.length-1);
+    var newAddress = {label: $scope.locationName, address: $scope.newLocation};
     $scope.newLocation = '';
     $scope.locationName = '';
-    AddressesFactory.AddAddresses(addresses[addresses.length-1]);
+    AddressesFactory.AddAddress(newAddress)
+      .then(function(){
+        geocode(newAddress);
+      });
   };
 
-  AddressesFactory.GetAddresses();
+  AddressesFactory.GetAddresses()
+    .then(function (addresses) {
+      for(var i = 0; i < addresses.length; i++){
+        geocode(addresses[i]);
+      }
+    });
+
 });
 
-var map, geocoder, addresses;
+var map, geocoder;
 
 function initMap() {
   geocoder = new google.maps.Geocoder();
@@ -51,11 +56,11 @@ function initMap() {
 
 };
 
-function geocode(index){
-  geocoder.geocode( { address: addresses[index].address}, function(results, status) {
+function geocode(newAddress){
+  geocoder.geocode( { address: newAddress.address}, function(results, status) {
     var marker = new google.maps.Marker({
       position: results[0].geometry.location,
-      title: addresses[index].label ,
+      title: newAddress.label,
       map: map
     });
   });
